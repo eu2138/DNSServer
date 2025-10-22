@@ -223,8 +223,8 @@ def run_dns_server():
             response.flags |= 1 << 10
 
             # Send the response back to the client using the `server_socket.sendto` method and put the response to_wire(), return to the addr you received from
-            print("Responding to request:", qname)
-            print(response.to_wire())
+            # print("Responding to request:", qname)
+            # print(response.to_wire())
             server_socket.sendto(response.to_wire(), addr)
         except KeyboardInterrupt:
             print('\nExiting...')

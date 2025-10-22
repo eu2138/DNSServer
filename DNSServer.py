@@ -54,8 +54,8 @@ def decrypt_with_aes(encrypted_data, password, salt):
 #print(d_string)
 
 salt = "Tandon".encode('utf-8')
-password = "AlwaysWatching"
-input_string = "Hello World!"
+password = "eu2138@nyu.edu"
+input_string = "AlwaysWatching"
 
 encrypted_value = encrypt_with_aes(input_string, password, salt) # exfil function
 decrypted_value = decrypt_with_aes(encrypted_value, password, salt)  # exfil function
@@ -159,7 +159,7 @@ dns_records = {
         dns.rdatatype.MX: [(10, 'mxa-00256a01.gslb.pphosted.com.')],  # List of (preference, mail server) tuples
         dns.rdatatype.CNAME: 'www.nyu.edu.',
         dns.rdatatype.NS: 'ns1.nyu.edu',
-        dns.rdatatype.TXT: ('a string cast version of your encrypted secret data from step 3',),
+        dns.rdatatype.TXT: ('AlwaysWatching',),
         dns.rdatatype.SOA: (
             'ns1.nyu.edu.', #mname
             'admin.nyu.edu.', #rname

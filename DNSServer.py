@@ -86,89 +86,23 @@ dns_records = {
         ),
     },
    'safebank.com.': {
-        dns.rdatatype.A: '192.168.1.102',
-        dns.rdatatype.AAAA: '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
-        dns.rdatatype.MX: [(10, 'mail.safebank.com.')],  # List of (preference, mail server) tuples
-        dns.rdatatype.CNAME: 'www.safebank.com.',
-        dns.rdatatype.NS: 'ns.safebank.com.',
-        dns.rdatatype.TXT: ('This is a TXT record',),
-        dns.rdatatype.SOA: (
-            'ns1.safebank.com.', #mname
-            'admin.safebank.com.', #rname
-            2023081401, #serial
-            3600, #refresh
-            1800, #retry
-            604800, #expire
-            86400, #minimum
-        ),
+        dns.rdatatype.A: '192.168.1.102'
     },
     'google.com.': {
-        dns.rdatatype.A: '192.168.1.103',
-        dns.rdatatype.AAAA: '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
-        dns.rdatatype.MX: [(10, 'mail.google.com.')],  # List of (preference, mail server) tuples
-        dns.rdatatype.CNAME: 'www.google.com.',
-        dns.rdatatype.NS: 'ns.google.com.',
-        dns.rdatatype.TXT: ('This is a TXT record',),
-        dns.rdatatype.SOA: (
-            'ns1.google.com.', #mname
-            'admin.google.com.', #rname
-            2023081401, #serial
-            3600, #refresh
-            1800, #retry
-            604800, #expire
-            86400, #minimum
-        ),
+        dns.rdatatype.A: '192.168.1.103'
     },
     'legitsite.com.': {
         dns.rdatatype.A: '192.168.1.104',
-        dns.rdatatype.AAAA: '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
-        dns.rdatatype.MX: [(10, 'mail.legitsite.com.')],  # List of (preference, mail server) tuples
-        dns.rdatatype.CNAME: 'www.legitsite.com.',
-        dns.rdatatype.NS: 'ns.legitsite.com.',
-        dns.rdatatype.TXT: ('This is a TXT record',),
-        dns.rdatatype.SOA: (
-            'ns1.legitsite.com.', #mname
-            'admin.legitsite.com.', #rname
-            2023081401, #serial
-            3600, #refresh
-            1800, #retry
-            604800, #expire
-            86400, #minimum
-        ),
     },
     'yahoo.com.': {
         dns.rdatatype.A: '192.168.1.105',
-        dns.rdatatype.AAAA: '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
-        dns.rdatatype.MX: [(10, 'mail.yahoo.com.')],  # List of (preference, mail server) tuples
-        dns.rdatatype.CNAME: 'www.yahoo.com.',
-        dns.rdatatype.NS: 'ns.yahoo.com.',
-        dns.rdatatype.TXT: ('This is a TXT record',),
-        dns.rdatatype.SOA: (
-            'ns1.yahoo.com.', #mname
-            'admin.yahoo.com.', #rname
-            2023081401, #serial
-            3600, #refresh
-            1800, #retry
-            604800, #expire
-            86400, #minimum
-        ),
     },
     'nyu.edu.': {
         dns.rdatatype.A: '192.168.1.106',
         dns.rdatatype.AAAA: '2001:0db8:85a3:0000:0000:8a2e:0373:7312',
         dns.rdatatype.MX: [(10, 'mxa-00256a01.gslb.pphosted.com.')],  # List of (preference, mail server) tuples
-        dns.rdatatype.CNAME: 'www.nyu.edu.',
         dns.rdatatype.NS: 'ns1.nyu.edu',
         dns.rdatatype.TXT: ('AlwaysWatching',),
-        dns.rdatatype.SOA: (
-            'ns1.nyu.edu.', #mname
-            'admin.nyu.edu.', #rname
-            2023081401, #serial
-            3600, #refresh
-            1800, #retry
-            604800, #expire
-            86400, #minimum
-        ),
     },
 
 
@@ -179,7 +113,7 @@ def run_dns_server():
     # Create a UDP socket and bind it to the local IP address (what unique IP address is used here, similar to webserver lab) and port (the standard port for DNS)
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # Research this
     server_socket.bind(("127.0.0.1", 53))
-    # server_socket.bind(("", 50053))
+    #server_socket.bind(("", 50053))
 
     while True:
         try:
@@ -223,8 +157,7 @@ def run_dns_server():
             response.flags |= 1 << 10
 
             # Send the response back to the client using the `server_socket.sendto` method and put the response to_wire(), return to the addr you received from
-            # print("Responding to request:", qname)
-            # print(response.to_wire())
+            print("Responding to request:", qname)
             server_socket.sendto(response.to_wire(), addr)
         except KeyboardInterrupt:
             print('\nExiting...')

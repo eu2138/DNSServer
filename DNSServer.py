@@ -92,7 +92,7 @@ dns_records = {
 def run_dns_server():
     # Create a UDP socket and bind it to the local IP address (what unique IP address is used here, similar to webserver lab) and port (the standard port for DNS)
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # Research this
-    server_socket.bind(localhost, 12000)
+    server_socket.bind(("127.0.0.1", 8080))
 
     while True:
         try:
@@ -124,45 +124,46 @@ def run_dns_server():
                     rdata = SOA(dns.rdataclass.IN, dns.rdatatype.SOA, mname, rname, rserial, refresh, retry, expire, minimum) # follow format from previous line
                     rdata_list.append(rdata)
                     print(rdata_list)
-#                else:
-#                    if isinstance(answer_data, str):
-#                        rdata_list = [dns.rdata.from_text(dns.rdataclass.IN, qtype, answer_data)]
-#                    else:
-#                        rdata_list = [dns.rdata.from_text(dns.rdataclass.IN, qtype, data) for data in answer_data]
-#                for rdata in rdata_list:
-#                    response.answer.append(dns.rrset.RRset(question.name, dns.rdataclass.IN, qtype))
-#                    response.answer[-1].add(rdata)
+                else:
+                    if isinstance(answer_data, str):
+                        rdata_list = [dns.rdata.from_text(dns.rdataclass.IN, qtype, answer_data)]
+                    else:
+                        rdata_list = [dns.rdata.from_text(dns.rdataclass.IN, qtype, data) for data in answer_data]
+                for rdata in rdata_list:
+                    response.answer.append(dns.rrset.RRset(question.name, dns.rdataclass.IN, qtype))
+                    response.answer[-1].add(rdata)
 
             # Set the response flags
-#            response.flags |= 1 << 10
+            response.flags |= 1 << 10
 
             # Send the response back to the client using the `server_socket.sendto` method and put the response to_wire(), return to the addr you received from
-#            print("Responding to request:", qname)
-#            server_socket.??????? 
+            print("Responding to request:", qname)
+            print(response.to_wire())
+            server_socket.sendto(response.to_wire(), addr)
         except KeyboardInterrupt:
             print('\nExiting...')
             server_socket.close()
             sys.exit(0)
 
 
-#def run_dns_server_user():
-#    print("Input 'q' and hit 'enter' to quit")
-#    print("DNS server is running...")
+def run_dns_server_user():
+    print("Input 'q' and hit 'enter' to quit")
+    print("DNS server is running...")
 
-#    def user_input():
-#        while True:
-#            cmd = input()
-#            if cmd.lower() == 'q':
-#                print('Quitting...')
-#                os.kill(os.getpid(), signal.SIGINT)
+    def user_input():
+        while True:
+            cmd = input()
+            if cmd.lower() == 'q':
+                print('Quitting...')
+                os.kill(os.getpid(), signal.SIGINT)
 
-#    input_thread = threading.Thread(target=user_input)
-#    input_thread.daemon = True
-#    input_thread.start()
-#    run_dns_server()
+    input_thread = threading.Thread(target=user_input)
+    input_thread.daemon = True
+    input_thread.start()
+    run_dns_server()
 
 
-#if __name__ == '__main__':
-#    run_dns_server_user()
-    #print("Encrypted Value:", encrypted_value)
-    #print("Decrypted Value:", decrypted_value)
+if __name__ == '__main__':
+    run_dns_server_user()
+    print("Encrypted Value:", encrypted_value)
+    print("Decrypted Value:", decrypted_value)

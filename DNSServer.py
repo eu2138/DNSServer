@@ -103,7 +103,7 @@ dns_records = {
         dns.rdatatype.AAAA: '2001:0db8:85a3:0000:0000:8a2e:0373:7312',
         dns.rdatatype.MX: [(10, 'mxa-00256a01.gslb.pphosted.com.')],  # List of (preference, mail server) tuples
         dns.rdatatype.NS: 'ns1.nyu.edu.',
-        dns.rdatatype.TXT: ('AlwaysWatching'),
+        dns.rdatatype.TXT: ('AlwaysWatching',),
     },
 
 
@@ -113,8 +113,8 @@ dns_records = {
 def run_dns_server():
     # Create a UDP socket and bind it to the local IP address (what unique IP address is used here, similar to webserver lab) and port (the standard port for DNS)
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # Research this
-    server_socket.bind(("127.0.0.1", 53))
-    #server_socket.bind(("", 50053))
+    #server_socket.bind(("127.0.0.1", 53))
+    server_socket.bind(("", 50053))
 
     while True:
         try:
@@ -142,9 +142,9 @@ def run_dns_server():
                     for pref, server in answer_data:
                         rdata_list.append(MX(dns.rdataclass.IN, dns.rdatatype.MX, pref, server))
                 if qtype == dns.rdatatype.TXT:
-                    for text in answer_data:
-                        if isinstance(text, str):
-                            rdata_list.append(TXT(dns.rdataclass.IN, dns.rdatatype.TXT, text))
+                    for string in answer_data:
+                        if isinstance(string, str):
+                            rdata_list.append(TXT(dns.rdataclass.IN, dns.rdatatype.TXT, string))
                 elif qtype == dns.rdatatype.SOA:
                     mname, rname, rserial, refresh, retry, expire, minimum = answer_data # What is the record format? See dns_records dictionary. Assume we handle @, Class, TTL elsewhere. Do some research on SOA Records
                     rdata = SOA(dns.rdataclass.IN, dns.rdatatype.SOA, mname, rname, rserial, refresh, retry, expire, minimum) # follow format from previous line

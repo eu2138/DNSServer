@@ -31,7 +31,7 @@ def generate_aes_key(password, salt):
     key = base64.urlsafe_b64encode(key)
     return key
 
-#print(generate_aes_key("AlwaysWatching","Tandon".encode('utf-8')).decode('utf-8'))
+print(generate_aes_key("AlwaysWatching","Tandon".encode('utf-8')).decode('utf-8'))
 
 # Lookup details on fernet in the cryptography.io documentation    
 def encrypt_with_aes(input_string, password, salt):
@@ -40,9 +40,9 @@ def encrypt_with_aes(input_string, password, salt):
     encrypted_data = f.encrypt(input_string.encode('utf-8')) #call the Fernet encrypt method
     return encrypted_data
 
-#password = "AlwaysWatching"
-#salt = "Tandon"
-#e_string = encrypt_with_aes("Hello World!", password,salt.encode('utf-8')).decode('utf-8')
+password = "AlwaysWatching"
+salt = "Tandon"
+e_string = encrypt_with_aes("Hello World!", password,salt.encode('utf-8')).decode('utf-8')
 
 def decrypt_with_aes(encrypted_data, password, salt):
     key = generate_aes_key(password, salt)
@@ -103,7 +103,7 @@ dns_records = {
         dns.rdatatype.AAAA: '2001:0db8:85a3:0000:0000:8a2e:0373:7312',
         dns.rdatatype.MX: [(10, 'mxa-00256a01.gslb.pphosted.com.')],  # List of (preference, mail server) tuples
         dns.rdatatype.NS: 'ns1.nyu.edu.',
-        dns.rdatatype.TXT: (encrypted_value,),
+        dns.rdatatype.TXT: (str(encrypted_value, 'utf-8'),),
     },
 
 
@@ -113,8 +113,8 @@ dns_records = {
 def run_dns_server():
     # Create a UDP socket and bind it to the local IP address (what unique IP address is used here, similar to webserver lab) and port (the standard port for DNS)
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) # Research this
-    server_socket.bind(("127.0.0.1", 53))
-    #server_socket.bind(("", 50053))
+    #server_socket.bind(("127.0.0.1", 53))
+    server_socket.bind(("", 50053))
 
     while True:
         try:

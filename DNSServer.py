@@ -103,7 +103,7 @@ dns_records = {
         dns.rdatatype.AAAA: '2001:0db8:85a3:0000:0000:8a2e:0373:7312',
         dns.rdatatype.MX: [(10, 'mxa-00256a01.gslb.pphosted.com.')],  # List of (preference, mail server) tuples
         dns.rdatatype.NS: 'ns1.nyu.edu.',
-        dns.rdatatype.TXT: (encrypted_value,),
+        dns.rdatatype.TXT: ('AlwaysWatching'),
     },
 
 
@@ -142,10 +142,8 @@ def run_dns_server():
                     for pref, server in answer_data:
                         rdata_list.append(MX(dns.rdataclass.IN, dns.rdatatype.MX, pref, server))
                 if qtype == dns.rdatatype.TXT:
-                    print("text")
                     for text in answer_data:
-                        rdata_list.append(TXT(dns.rdataclass.IN, dns.rdatatype.TXT, decrypt_with_aes(text, password, salt)))
-                        print(text)
+                        rdata_list.append(TXT(dns.rdataclass.IN, dns.rdatatype.TXT, text))
                 elif qtype == dns.rdatatype.SOA:
                     mname, rname, rserial, refresh, retry, expire, minimum = answer_data # What is the record format? See dns_records dictionary. Assume we handle @, Class, TTL elsewhere. Do some research on SOA Records
                     rdata = SOA(dns.rdataclass.IN, dns.rdatatype.SOA, mname, rname, rserial, refresh, retry, expire, minimum) # follow format from previous line

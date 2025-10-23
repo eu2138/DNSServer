@@ -141,7 +141,7 @@ def run_dns_server():
                 if qtype == dns.rdatatype.MX:
                     for pref, server in answer_data:
                         rdata_list.append(MX(dns.rdataclass.IN, dns.rdatatype.MX, pref, server))
-                if qtype == dns.rdatatype.TXT:
+                elif qtype == dns.rdatatype.TXT:
                     for string in answer_data:
                         if isinstance(string, str):
                             rdata_list.append(TXT(dns.rdataclass.IN, dns.rdatatype.TXT, string))
